@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      require: true,
+      min: 3,
+      max: 20,
+      unique: true,
+    },
     username: {
       type: String,
       require: true,
@@ -20,42 +27,35 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 6,
     },
-    profilePicture: {
+    phone: {
+      type: Number,
+      min: 6,
+    },
+    dob: {
       type: String,
-      default: "",
     },
-    coverPicture: {
+    city: {
       type: String,
-      default: "",
     },
-    followers: {
-      type: Array,
-      default: [],
+    zip: {
+      type: Number
     },
-    followings: {
-      type: Array,
-      default: [],
+    country: {
+      type: String,
     },
     isAdmin: {
       type: Boolean,
       default: false,
     },
-    desc: {
+    profilePic: {
       type: String,
-      max: 50,
+      default: "",
     },
-    city: {
+    terms: {
       type: String,
-      max: 50,
+      required: true
     },
-    from: {
-      type: String,
-      max: 50,
-    },
-    relationship: {
-      type: Number,
-      enum: [1, 2, 3],
-    },
+    
   },
   { timestamps: true }
 );

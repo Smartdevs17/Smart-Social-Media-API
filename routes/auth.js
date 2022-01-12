@@ -11,14 +11,22 @@ router.post("/register", async (req, res) => {
 
     //create new user
     const newUser = new User({
+      name: req.body.name,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
+      phone: req.body.phone,
+      dob: req.body.dob,
+      city: req.body.city,
+      zip: req.body.zip,
+      country: req.body.country,
+      terms: req.body.terms,
     });
 
     //save user and respond
     const user = await newUser.save();
-    res.status(201).json(user);
+    const { password,...others} = user._doc;
+    res.status(201).json(others);
   } catch (err) {
     res.status(500).json(err)
   }
@@ -28,12 +36,16 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    !user && res.status(404).json("user not found");
-
+    // !user && ( res.status(404).json({message: "User not found"}));
+    if(!user){
+       return res.status(404).json({message: "User not found"})
+    }
     const validPassword = await bcrypt.compare(req.body.password, user.password)
-    !validPassword && res.status(400).json("wrong password")
+    // !validPassword &&  res.status(400).json({message: "Wrong Password"})
+    if(!validPassword){
+      return res.status(400).json({message: "Wrong Password"})
+    };
 
-    res.status(201).json(user)
   } catch (err) {
     res.status(500).json(err)
   }
