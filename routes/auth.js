@@ -35,17 +35,41 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const users = await User.findOne({ email: req.body.email });
     // !user && ( res.status(404).json({message: "User not found"}));
-    if(!user){
+    if(!users){
        return res.status(404).json({message: "User not found"})
     }
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    const validPassword = await bcrypt.compare(req.body.password, users.password)
     // !validPassword &&  res.status(400).json({message: "Wrong Password"})
     if(!validPassword){
       return res.status(400).json({message: "Wrong Password"})
     };
 
+    const {password,...user} = users._doc;
+    res.status(201).json(user)
+
+
+  //   await User.findOne({ email: req.body.email},(err,user) => {
+  //     if(err){
+  //       console.log(err);
+	// return;
+  //     }else if(!user){
+  //       res.status(404).json("User not found")
+	// return;
+  //     }else if(user){
+  //           const validPassword =  bcrypt.compare(req.body.password, user.password);
+  //           if(!validPassword){
+  //             res.status(400).json("Wrong Password")
+  //           }else{
+  //            // const {password,...others} = user._doc;
+  //             //     return res.status(201).json(others)
+	// 	res.status(201).json(user)
+	// 	return
+  //           }
+  //     }
+  //   });
+    
   } catch (err) {
     res.status(500).json(err)
   }
