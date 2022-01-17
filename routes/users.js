@@ -53,6 +53,19 @@ router.get("/:id", async (req, res) => {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;
     res.status(200).json(others);
+    console.log("Successfully queryed the user")
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+// GET ALL USERS
+router.get("/", async (req, res) => {
+  try {
+    const user = await User.find();
+    res.status(200).json(user);
+    console.log("Successfully recieved all users")
   } catch (err) {
     res.status(500).json(err);
   }

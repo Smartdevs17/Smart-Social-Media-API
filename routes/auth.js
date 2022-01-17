@@ -27,6 +27,7 @@ router.post("/register", async (req, res) => {
     const user = await newUser.save();
     const { password,...others} = user._doc;
     res.status(201).json(others);
+    console.log("Successfully Registered user")
   } catch (err) {
     res.status(500).json(err)
   }
@@ -45,7 +46,9 @@ router.post("/login", async (req, res) => {
     if(!validPassword){
       return res.status(400).json({message: "Wrong Password"})
     };
-
+    const {password, ...others} = user._doc;
+    res.status(201).json(others)
+    console.log("User have Successfully Login")
   } catch (err) {
     res.status(500).json(err)
   }

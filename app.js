@@ -12,6 +12,7 @@ const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
+const adminRoute = require("./routes/admin");
 const cors = require("cors")
 
 app.use("/images", express.static(path.join(__dirname, "/images")));
@@ -44,6 +45,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
+  console.log("Api has just Perfectly recieved a file upload")
 });
 
 
@@ -58,7 +60,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
-
+app.use("/api/admins",adminRoute);
 
 
 port = process.env.PORT || 5000;
